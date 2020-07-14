@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -26,8 +27,19 @@ namespace Logging
             services.AddControllersWithViews();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
+            loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), "log.txt"));
+            var logger = loggerFactory.CreateLogger<FileLogger>();
+
+            //var logFactory = LoggerFactory.Create(builder =>
+            //{
+            //    builder.AddDebug();
+            //    builder.AddFile($"Logs/app-{DateTime.Today.ToShortDateString()}.txt", LogLevel.Information);
+            //    builder.SetMinimumLevel(LogLevel.Debug);
+            //});
+            //ILogger logger = logFactory.CreateLogger<Startup>();
+
             if (env.IsDevelopment())
             {
                 logger.LogInformation($"ApplicationName: {env.ApplicationName}, EnvironmentName: {env.EnvironmentName}");
@@ -35,6 +47,7 @@ namespace Logging
             }
             else
             {
+                logger.LogInformation($"ApplicationName: {env.ApplicationName}, EnvironmentName: {env.EnvironmentName}");
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }

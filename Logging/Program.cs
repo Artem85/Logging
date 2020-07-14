@@ -22,13 +22,13 @@ namespace Logging
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                })
-                .ConfigureLogging(logging =>
-                {
-                    logging.ClearProviders();
-                    logging.AddConsole();
-                    logging.AddFile($"Logs/app-{DateTime.Today.ToShortDateString()}.txt", LogLevel.Information);
-                }
-                );
+                });
+                //.ConfigureLogging(logging =>
+                //{
+                //    logging.ClearProviders();
+                //    logging.AddConsole();
+                //    logging.AddFile($"Logs/app-{DateTime.Today.ToShortDateString()}.txt", LogLevel.Information);
+                //}
+                //);
     }
 }
